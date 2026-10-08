@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapa de juegos</title>
+  <meta name="description" content="Califica videojuegos que conozcas y recibe recomendaciones a partir de un mapa de 1,433 juegos construido con PCA.">
+  <meta name="theme-color" content="#EEF1F5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1322" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23141B33'/%3E%3Ccircle cx='10' cy='12' r='3' fill='%23E4002B'/%3E%3Ccircle cx='21' cy='9' r='2.4' fill='%230062D1'/%3E%3Ccircle cx='13' cy='22' r='2.6' fill='%23128A12'/%3E%3Ccircle cx='22' cy='20' r='4' fill='%23F5A300'/%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="barra">
+    <a class="marca" href="#inicio" aria-label="Mapa de juegos, ir al inicio">
+      <svg class="marca__icono" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="9" cy="12" r="3.2" class="p-nintendo"/>
+        <circle cx="21" cy="8" r="2.4" class="p-playstation"/>
+        <circle cx="12" cy="23" r="2.7" class="p-xbox"/>
+        <circle cx="23" cy="21" r="4.2" class="p-tu"/>
+      </svg>
+      <span>Mapa de juegos</span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#inicio" data-vista="inicio">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V20h-5v-5H9v5H4z"/></svg>
+        <span>Inicio</span>
+      </a>
+      <a href="#califica" data-vista="califica">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg>
+        <span>Califica</span>
+      </a>
+      <a href="#para-ti" data-vista="para-ti">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+        <span>Para ti</span>
+      </a>
+      <a href="#como-funciona" data-vista="como-funciona">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="8" r="2.2"/><circle cx="16" cy="6" r="1.7"/><circle cx="10" cy="17" r="1.9"/><circle cx="17.5" cy="15.5" r="2.8"/></svg>
+        <span>Cómo funciona</span>
+      </a>
+    </nav>
+    <a class="contador" href="#califica" aria-live="polite">
+      <span class="contador__punto" aria-hidden="true"></span>
+      <span class="contador__texto" id="contador">0 calificados</span>
+    </a>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+
+    <!-- ============ INICIO ============ -->
+    <section class="vista" id="vista-inicio" data-vista="inicio" aria-labelledby="titulo-inicio">
+      <div class="portada">
+        <div class="portada__texto">
+          <h1 class="titular" id="titulo-inicio">
+            <span class="titular__cifra" id="cifra-juegos">1,433</span>
+            juegos acomodados según quién los juega
+          </h1>
+          <p class="portada__bajada">Cada punto es un videojuego. Los que quedan cerca suelen gustarle a las mismas personas. Califica algunos que conozcas y te mostramos cuáles quedan cerca de tus gustos.</p>
+          <div class="acciones">
+            <a class="boton boton--principal" href="#califica">Empezar a calificar</a>
+            <a class="boton boton--secundario" href="#como-funciona">Cómo funciona</a>
+          </div>
+          <ul class="leyenda" aria-label="Colores por plataforma">
+            <li><span class="leyenda__punto p-nintendo"></span>Nintendo</li>
+            <li><span class="leyenda__punto p-playstation"></span>PlayStation</li>
+            <li><span class="leyenda__punto p-xbox"></span>Xbox</li>
+            <li><span class="leyenda__punto p-pc"></span>PC</li>
+          </ul>
+        </div>
+        <figure class="portada__mapa mapa" id="mapa-portada">
+          <canvas aria-label="Mapa de 1,433 videojuegos. Los juegos de Nintendo se agrupan arriba a la derecha, los de PlayStation abajo y los de Xbox a la izquierda." role="img"></canvas>
+          <div class="mapa__ficha" hidden></div>
+          <figcaption class="mapa__pie">Pasa el cursor sobre un punto para ver el juego. Haz clic para calificarlo.</figcaption>
+        </figure>
+      </div>
+
+      <section class="pasos" aria-labelledby="titulo-pasos">
+        <h2 class="subtitulo" id="titulo-pasos">Cómo se usa</h2>
+        <ol class="pasos__lista">
+          <li>
+            <h3>Califica lo que conozcas</h3>
+            <p>Dale de 1 a 5 estrellas a por lo menos cinco juegos. Los que no conozcas, sáltalos.</p>
+          </li>
+          <li>
+            <h3>Te ubicamos en el mapa</h3>
+            <p>Tus calificaciones definen un punto en el mismo mapa que los juegos: cerca de lo que te gustó y lejos de lo que no.</p>
+          </li>
+          <li>
+            <h3>Revisa tus recomendaciones</h3>
+            <p>Te mostramos los juegos que no has calificado y que quedan más cerca de tu punto, con el juego que más pesó en cada uno.</p>
+          </li>
+        </ol>
+      </section>
+
+      <p class="fuente-datos" id="fuente-datos"></p>
+
+      <section class="video" id="video" aria-labelledby="titulo-video">
+        <div class="video__texto">
+          <h2 class="subtitulo" id="titulo-video">La explicación en video</h2>
+          <p>En minuto y medio, cómo la app convierte miles de calificaciones en un mapa y cómo usa ese mapa para recomendarte juegos.</p>
+        </div>
+        <div class="video__marco" id="video-marco"></div>
+      </section>
+    </section>
+
+    <!-- ============ CALIFICA ============ -->
+    <section class="vista" id="vista-califica" data-vista="califica" aria-labelledby="titulo-califica" hidden>
+      <header class="encabezado">
+        <h1 class="titular titular--seccion" id="titulo-califica">Califica los juegos que conozcas</h1>
+        <p class="encabezado__bajada">Usa de 1 a 5 estrellas y salta los que no hayas jugado. Con cinco juegos ya ves recomendaciones, con diez o más mejoran bastante.</p>
+      </header>
+
+      <div class="filtros">
+        <label class="buscador">
+          <span class="sr">Buscar un juego</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+          <input id="buscar" type="search" autocomplete="off" spellcheck="false" placeholder="Busca un juego, por ejemplo Halo, Zelda o FIFA">
+        </label>
+        <div class="segmentos" role="group" aria-label="Filtrar por plataforma" id="filtro-familia">
+          <button type="button" data-familia="" aria-pressed="true">Todas</button>
+          <button type="button" data-familia="nintendo" aria-pressed="false"><span class="leyenda__punto p-nintendo"></span>Nintendo</button>
+          <button type="button" data-familia="playstation" aria-pressed="false"><span class="leyenda__punto p-playstation"></span>PlayStation</button>
+          <button type="button" data-familia="xbox" aria-pressed="false"><span class="leyenda__punto p-xbox"></span>Xbox</button>
+          <button type="button" data-familia="pc" aria-pressed="false"><span class="leyenda__punto p-pc"></span>PC</button>
+        </div>
+        <label class="interruptor">
+          <input type="checkbox" id="solo-calificados">
+          <span>Solo los que califiqué</span>
+        </label>
+      </div>
+
+      <p class="resultado" id="resultado" aria-live="polite"></p>
+      <ul class="rejilla" id="rejilla"></ul>
+      <div class="mas">
+        <button type="button" class="boton boton--secundario" id="mostrar-mas" hidden>Mostrar más juegos</button>
+      </div>
+
+      <div class="progreso" id="progreso">
+        <div class="progreso__barra" aria-hidden="true"><span id="progreso-relleno"></span></div>
+        <p class="progreso__texto" id="progreso-texto">Califica 5 juegos para ver tus recomendaciones</p>
+        <a class="boton boton--principal" href="#para-ti" id="progreso-boton" aria-disabled="true">Ver mis recomendaciones</a>
+      </div>
+    </section>
+
+    <!-- ============ PARA TI ============ -->
+    <section class="vista" id="vista-para-ti" data-vista="para-ti" aria-labelledby="titulo-para-ti" hidden>
+      <header class="encabezado">
+        <h1 class="titular titular--seccion" id="titulo-para-ti">Tus recomendaciones</h1>
+        <p class="encabezado__bajada" id="para-ti-bajada"></p>
+      </header>
+
+      <div class="vacio" id="para-ti-vacio" hidden>
+        <p class="vacio__titulo" id="vacio-titulo">Todavía no hay recomendaciones</p>
+        <p id="vacio-texto">Califica por lo menos cinco juegos y aquí aparecerán los que quedan más cerca de tus gustos.</p>
+        <a class="boton boton--principal" href="#califica">Calificar juegos</a>
+      </div>
+
+      <div class="recos" id="para-ti-contenido" hidden>
+        <ol class="recos__lista" id="recos-lista"></ol>
+        <aside class="recos__lado" aria-label="Tu lugar en el mapa">
+          <figure class="mapa mapa--lado" id="mapa-lado">
+            <canvas role="img" aria-label="Mapa con tu posición y tus recomendaciones"></canvas>
+            <div class="mapa__ficha" hidden></div>
+          </figure>
+          <p class="recos__nota">El punto ámbar eres tú y los puntos con número son tus recomendaciones. El mapa se acerca a tu zona; los aros ámbar son juegos que calificaste.</p>
+          <div class="recos__acciones">
+            <button type="button" class="boton boton--secundario" id="mostrar-mas-recos">Ver 12 más</button>
+            <a class="boton boton--secundario" href="#califica">Calificar más juegos</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ CÓMO FUNCIONA ============ -->
+    <section class="vista" id="vista-como-funciona" data-vista="como-funciona" aria-labelledby="titulo-como" hidden>
+      <header class="encabezado">
+        <h1 class="titular titular--seccion" id="titulo-como">Cómo se generan las recomendaciones</h1>
+        <p class="encabezado__bajada">La app usa análisis de componentes principales (PCA) sobre las calificaciones de miles de personas. Son cuatro pasos.</p>
+      </header>
+
+      <ol class="etapas">
+        <li class="etapa">
+          <div class="etapa__texto">
+            <h2>Una tabla de personas contra juegos</h2>
+            <p id="texto-matriz"></p>
+            <p>La mayoría de las casillas están vacías porque cada persona solo ha jugado unos cuantos títulos. Una casilla vacía no dice que el juego no le guste, solo que no lo calificó.</p>
+          </div>
+          <figure class="matriz" aria-label="Muestra de la tabla de calificaciones">
+            <div class="matriz__rejilla" id="matriz"></div>
+            <figcaption>Una muestra de 24 personas y 36 juegos. Cada cuadro con color es una calificación; más oscuro es más estrellas.</figcaption>
+          </figure>
+        </li>
+
+        <li class="etapa etapa--ancha">
+          <div class="etapa__texto">
+            <h2>PCA encuentra los gustos que se repiten</h2>
+            <p>PCA resume la tabla en 50 componentes. Cada componente es un contraste entre dos grupos de juegos que tienden a jugar personas distintas. Con esos componentes cada juego obtiene una posición, y los juegos con públicos parecidos quedan cerca.</p>
+            <p>Elige dos componentes para verlos como mapa. Los extremos de cada eje muestran los juegos que más lo definen.</p>
+          </div>
+          <div class="explorador">
+            <div class="explorador__controles">
+              <label>Eje horizontal
+                <select id="eje-x"></select>
+              </label>
+              <label>Eje vertical
+                <select id="eje-y"></select>
+              </label>
+            </div>
+            <p class="polo polo--arr" id="polo-arr"></p>
+            <figure class="mapa mapa--grande" id="mapa-explorador">
+              <canvas role="img" aria-label="Mapa de juegos según los componentes elegidos"></canvas>
+              <div class="mapa__ficha" hidden></div>
+            </figure>
+            <div class="polos-x">
+              <p class="polo polo--izq" id="polo-izq"></p>
+              <p class="polo polo--aba" id="polo-aba"></p>
+              <p class="polo polo--der" id="polo-der"></p>
+            </div>
+          </div>
+        </li>
+
+        <li class="etapa">
+          <div class="etapa__texto">
+            <h2>Tus calificaciones te ubican</h2>
+            <p>Tu perfil se calcula sumando los perfiles de los juegos que calificaste. Cada uno pesa según tus estrellas: cinco estrellas suman tres veces, cuatro suman dos, tres suman una, dos no cuentan y una estrella resta.</p>
+            <p>Para cada juego que no has calificado se mide qué tanto apunta su perfil en la misma dirección que el tuyo. Los más alineados son tus recomendaciones. El cálculo compensa la popularidad para que no te recomiende solo los juegos más vendidos.</p>
+          </div>
+          <div class="pesos" aria-label="Peso de cada calificación">
+            <div class="pesos__fila"><span class="estrellas-fijas" data-n="5"></span><span class="pesos__barra" style="--v:3"></span><span class="pesos__valor">+3</span></div>
+            <div class="pesos__fila"><span class="estrellas-fijas" data-n="4"></span><span class="pesos__barra" style="--v:2"></span><span class="pesos__valor">+2</span></div>
+            <div class="pesos__fila"><span class="estrellas-fijas" data-n="3"></span><span class="pesos__barra" style="--v:1"></span><span class="pesos__valor">+1</span></div>
+            <div class="pesos__fila"><span class="estrellas-fijas" data-n="2"></span><span class="pesos__barra" style="--v:0"></span><span class="pesos__valor">0</span></div>
+            <div class="pesos__fila"><span class="estrellas-fijas" data-n="1"></span><span class="pesos__barra pesos__barra--neg" style="--v:1"></span><span class="pesos__valor">−1</span></div>
+          </div>
+        </li>
+
+        <li class="etapa">
+          <div class="etapa__texto">
+            <h2>Qué tan bien funciona</h2>
+            <p>Se probó con 3,377 personas que el modelo no vio al entrenarse. A cada una se le escondió un juego que calificó con 4 o 5 estrellas y se revisó si ese juego aparecía entre sus 10 primeras recomendaciones de un catálogo de 1,433.</p>
+            <p>Recomendar los juegos más populares acierta en 8 de cada 100 personas. El mapa de PCA acierta en 19 de cada 100, más del doble.</p>
+          </div>
+          <figure class="evaluacion">
+            <ul class="barras" id="barras-evaluacion"></ul>
+            <figcaption>Porcentaje de personas cuyo juego escondido apareció en su top 10.</figcaption>
+          </figure>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>Datos: <a href="https://amazon-reviews-2023.github.io/" rel="noopener" target="_blank">Amazon Reviews'23</a> (McAuley Lab, UC San Diego), categoría de videojuegos. Las portadas se cargan desde Amazon.</p>
+    <p id="pie-autor">Actividad para la materia Inteligencia Artificial 1, Universidad de Monterrey.</p>
+  </footer>
+
+  <div class="aviso" id="aviso" role="status" aria-live="polite" hidden></div>
+
+  <template id="plantilla-juego">
+    <li class="juego">
+      <div class="portadilla"><img alt="" loading="lazy" decoding="async"></div>
+      <h3 class="juego__titulo"></h3>
+      <p class="juego__meta"></p>
+      <div class="estrellas" role="group"></div>
+    </li>
+  </template>
+
+  <script src="js/config.js"></script>
+  <script src="data/juegos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
